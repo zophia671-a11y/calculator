@@ -15,7 +15,7 @@ for n in range(0,100):
 pi *= 2
 
 #Basic
-def abs(x):
+def my_abs(x):
     if x < 0:
         return -x
     else:
@@ -23,7 +23,7 @@ def abs(x):
     
 def root(x,rad=2):
     result = 0
-    if x<0
+    if x<0:
          while pow(result,2) < abs(x):
             result += 1
         for p in range(1,10):
@@ -164,7 +164,7 @@ def exp(x):
         return (cos(x.imag) + sin(x.imag)*1j) * exp(x.real)
 # Outputs    
 
-def round(x,digits):
+def my_round(x,digits):
     return round(pow(10,digits)*x)/pow(10,digits)
     
 def output(x):
