@@ -158,7 +158,10 @@ def log(base,x):
     return ln(x)/ln(base)
 
 def exp(x):
-    return pow(e,x)
+    if not isinstance(x, complex):
+        return pow(e,x)
+    else:
+        return (cos(x.imag) + sin(x.imag)*1j) * exp(x.real)
 # Outputs    
 
 def round(x,digits):
