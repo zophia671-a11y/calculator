@@ -56,7 +56,7 @@ def tan(x,form="rad"):
     
 def sec(x,form="rad"):
     return 1/cos(x,form)
-    
+
 def csc(x,form="rad"):
     return 1/sin(x,form)
     
@@ -87,36 +87,41 @@ def coth(x):
 #Inverse Trig Functions
 
 def arctan(x):
-    if x > 0:
-        if x > 1:
-            result = 1.5
-        if x < 1:
-            result = 0.5
-        result = 1.5
-        for i in range(1,10):
-            result = result - (sin(result)-x*cos(result))/(x*sin(result)+cos(result))
-        return result
-    elif x == 0:
-        return 0
-    if x < 0:
-        return -arctan(-x)
+    return (1j/2) * ln((1j+z)/(1j-z))
 
-def atanh(x):
+def arctanh(x):
     return -1j * arctan(1j * x)
     
-def acosh(x):
-    return ln(x+(root(1+x)*root(x-1)))
-    
+def arccosh(x):
+    return ln(x+(root(1+x)*root(x-1))) 
 
 #Logarithms
 
-def ln(x):
-    result = -1000
-    while pow(e,result) < x:
-        result += 1
-    for i in range(1,10):
-        result = result - (pow(e,result)-x)/pow(e,result)
-    return result
+def ln(a):
+    if isinstance(a, complex):
+        x, y = a.real, a.imag
+        r = root(x*x + y*y)
+        if x > 0:
+            theta = arctan(y/x)
+        elif x < 0 and y >= 0:
+            theta = arctan(y/x) + pi
+        elif x < 0 and y < 0:
+            theta = arctan(y/x) - pi
+        elif x == 0 and y > 0:
+            theta = pi/2
+        elif x == 0 and y < 0:
+            theta = -pi/2
+        else:
+            raise ValueError("ln(0) is undefined")
+        return ln(r) + 1j*theta
+    else:
+        result = -1000
+        while pow(e, result) < a:
+            result += 1
+        for i in range(1,10):
+            result = result - (pow(e, result)-a)/pow(e, result)
+        return result
+
 
 def log10(x):
     return ln(x)/ln(10)
@@ -151,4 +156,5 @@ def aConvert(inputValue,inputForm,outputForm):
         return inputValue
     elif outputForm != "rad":
         return inputValue
+
 
