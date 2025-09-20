@@ -24,7 +24,7 @@ def my_abs(x):
 def root(x,rad=2):
     result = 0
     if x<0:
-         while pow(result,2) < abs(x):
+        while pow(result,2) < abs(x):
             result += 1
         for p in range(1,10):
             result = result - (pow(result,rad)-abs(x))/(rad * pow(result,rad-1))
@@ -39,7 +39,7 @@ def root(x,rad=2):
 #Trig Functions
 
 def arg(a):
-    theta=0
+    z=0
     if isinstance(a, complex):
         x, y = a.real, a.imag
         if x > 0:
@@ -60,8 +60,10 @@ def arg(a):
 
 def sin(x,form="rad"):
     aConvert(x,form,"rad")
-    while x < -1*pi or x> pi:
+    while x> pi:
         x -= 2*pi
+    while x< pi:
+        x+= 2*pi
     result = 0
     for n in range(0,35):
         result += pow(-1,n)/factorial(2*n+1)*pow(x,2*n+1)
@@ -69,8 +71,10 @@ def sin(x,form="rad"):
 
 def cos(x,form="rad"):
     aConvert(x,form,"rad")
-    while x < -1*pi or x> pi:
+    while x> pi:
         x -= 2*pi
+    while x< pi:
+        x+= 2*pi:
     result = 0
     for n in range(0,35):
         result += pow(-1,n)/factorial(2*n) * pow(x,2*n)
@@ -115,9 +119,9 @@ def arctan(x):
     if not isinstance(x, complex):
         if x > 0:
             if x > 0.5:
-                result = 1.5
+               return result = 1.5
             if x < 0.5:
-                result = 0.5
+               return result = 0.5
             result = 1.5
             for i in range(1,10):
                 result = result - (sin(result)-x*cos(result))/(x*sin(result)+cos(result))
@@ -133,7 +137,7 @@ def arctanh(x):
     return -1j * arctan(1j * x)
     
 def arccosh(x):
-    return ln(x+(root(1+x)*root(x-1))) 
+    return ln(x+(root(1+x)*root(x-1)))
 
 #Logarithms
 
@@ -142,6 +146,16 @@ def ln(a):
         x, y = a.real, a.imag
         r = root(x*x + y*y)
         return ln(r) + 1j*arg(a)
+    elif a<0:
+        result = -1000
+        while pow(e, result) < abs(a):
+            result += 1
+        for i in range(1,10):
+            result = result - (pow(e, result)-abs(a))/pow(e, result)
+        return result+(1j*pi)
+    elif a==0:
+        print("MathError: ln(0) undefined")
+        return None
     else:
         result = -1000
         while pow(e, result) < a:
