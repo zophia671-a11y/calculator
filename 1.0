@@ -87,7 +87,7 @@ def coth(x):
 #Inverse Trig Functions
 
 def arctan(x):
-    return (1j/2) * ln((1j+z)/(1j-z))
+    return (1j/2) * ln((1j+x)/(1j-x))
 
 def arctanh(x):
     return -1j * arctan(1j * x)
