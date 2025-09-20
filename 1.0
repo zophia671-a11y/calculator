@@ -157,4 +157,4 @@ def aConvert(inputValue,inputForm,outputForm):
     elif outputForm != "rad":
         return inputValue
 
-
+print(arctanh(10))
