@@ -87,22 +87,22 @@ def coth(x):
 #Inverse Trig Functions
 
 def arctan(x):
-    return (1j/2) * ln((1j+x)/(1j-x))
-
-def atan(x):
-    if x > 0:
-        if x > 0.5:
+    if isinstance(a, complex):
+        if x > 0:
+            if x > 0.5:
+                result = 1.5
+            if x < 0.5:
+                result = 0.5
             result = 1.5
-        if x < 0.5:
-            result = 0.5
-        result = 1.5
-        for i in range(1,10):
-            result = result - (math.sin(result)-x*math.cos(result))/(x*math.sin(result)+math.cos(result))
-        return result
-    elif x == 0:
-        return 0
-    if x < 0:
-        return -arctan(-x)
+            for i in range(1,10):
+                result = result - (math.sin(result)-x*math.cos(result))/(x*math.sin(result)+math.cos(result))
+            return result
+        elif x == 0:
+            return 0
+        if x < 0:
+            return -arctan(-x)
+    else:
+        return (1j/2) * ln((1j+x)/(1j-x))
 
 def arctanh(x):
     return -1j * arctan(1j * x)
