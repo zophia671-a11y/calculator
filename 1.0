@@ -87,7 +87,7 @@ def coth(x):
 #Inverse Trig Functions
 
 def arctan(x):
-    if isinstance(a, complex):
+    if isinstance(x, complex):
         if x > 0:
             if x > 0.5:
                 result = 1.5
