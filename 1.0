@@ -94,7 +94,7 @@ def cos(x,form="rad"):
     while x> pi:
         x -= 2*pi
     while x< pi:
-        x+= 2*pi:
+        x+= 2*pi
     result = 0
     for n in range(0,35):
         result += pow(-1,n)/factorial(2*n) * pow(x,2*n)
@@ -138,6 +138,7 @@ def coth(x):
 def arctan(x):
     if not isinstance(x, complex):
         if x > 0:
+            result = 0
             if x > 0.5:
                return result = 1.5
             if x < 0.5:
