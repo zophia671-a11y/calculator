@@ -277,7 +277,7 @@ def polysub(left,right):
         if i in leftdict.keys() and i not in rightdict.keys():
             newpoly.setcoef(i,leftdict[i])
         elif i not in leftdict.keys() and i in rightdict.keys():
-            newpoly.setcoef(i,rightdict[i])
+            newpoly.setcoef(i,-rightdict[i])
         else:
             newpoly.setcoef(i,leftdict[i]-rightdict[i])
     return newpoly
