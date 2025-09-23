@@ -279,11 +279,12 @@ def polysub(left,right):
         elif i not in leftdict.keys() and i in rightdict.keys():
             newpoly.setcoef(i,rightdict[i])
         else:
-            newpoly.setcoef(i,rightdict[i]-leftdict[i])
+            newpoly.setcoef(i,leftdict[i]-rightdict[i])
+    return newpoly
 
 def polyadd(left,right):
     if type(left) != Polynomial or type(right) != Polynomial:
-        raise TypeError("polysub doesn't take non-polynomials")
+        raise TypeError("polyadd doesn't take non-polynomials")
     newpoly = Polynomial()
     leftdict = []
     rightdict = []
@@ -297,12 +298,18 @@ def polyadd(left,right):
         elif i not in leftdict.keys() and i in rightdict.keys():
             newpoly.setcoef(i,rightdict[i])
         else:
-            newpoly.setcoef(i,rightdict[i]+leftdict[i])            
+            newpoly.setcoef(i,rightdict[i]+leftdict[i])  
+    return newpoly          
 
 
 class Expression:
     def __init__(self,poly):
         self.poly = poly
+
+def normalize(left,right):
+    if type(left) != Expression or type(right) != Expression:
+        raise TypeError("normalize doesn't take non-expressions")
+    newexpr = Expression(polysub(left.poly,right.poly))
 
 class Equation:
     def __init__(self,left,right):
