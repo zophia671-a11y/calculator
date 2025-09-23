@@ -235,3 +235,78 @@ def aConvert(inputValue,inputForm,outputForm):
     else:
         print("Unknown output form.")
 
+class Monomial:
+    def __init__(self,coef,expon):
+        if type(coef) != int or type(expon) != int:
+            raise TypeError("Monomial Don't Except Non-Integers")
+        if expon <= 0:
+            raise Exception("Exponent in Monomials has to be postive")
+        self.coef = coef
+        self.expon = expon
+
+class Polynomial:
+    def __init__(self, *monomials):
+        self.monomials = monomials
+        for i in monomials:
+            if type(i) != Monomial:
+                raise TypeError("Polynomial doesn't accept non-monomial")
+
+    def setcoef(self,expon,newco):
+        inside = False
+        for i in self.monomials:
+            if i.expon == expon:
+                i.coef = newco
+                inside = True
+                break
+        if inside == False:
+            self.monomials.append(Monomial(newco,expon))
+        
+
+
+def polysub(left,right):
+    if type(left) != Polynomial or type(right) != Polynomial:
+        raise TypeError("polysub doesn't take non-polynomials")
+    newpoly = Polynomial()
+    leftdict = []
+    rightdict = []
+    for i in left.monomials:
+        leftdict[left.expon] = left.coef
+    for i in right.monomials:
+        rightdict[right.expon] = right.coef
+    for i in range(1,max(max(left.dict.keys()),max(rightdict.keys()))):
+        if i in leftdict.keys() and i not in rightdict.keys():
+            newpoly.setcoef(i,leftdict[i])
+        elif i not in leftdict.keys() and i in rightdict.keys():
+            newpoly.setcoef(i,rightdict[i])
+        else:
+            newpoly.setcoef(i,rightdict[i]-leftdict[i])
+
+def polyadd(left,right):
+    if type(left) != Polynomial or type(right) != Polynomial:
+        raise TypeError("polysub doesn't take non-polynomials")
+    newpoly = Polynomial()
+    leftdict = []
+    rightdict = []
+    for i in left.monomials:
+        leftdict[left.expon] = left.coef
+    for i in right.monomials:
+        rightdict[right.expon] = right.coef
+    for i in range(1,max(max(left.dict.keys()),max(rightdict.keys()))):
+        if i in leftdict.keys() and i not in rightdict.keys():
+            newpoly.setcoef(i,leftdict[i])
+        elif i not in leftdict.keys() and i in rightdict.keys():
+            newpoly.setcoef(i,rightdict[i])
+        else:
+            newpoly.setcoef(i,rightdict[i]+leftdict[i])            
+
+
+class Expression:
+    def __init__(self,poly):
+        self.poly = poly
+
+class Equation:
+    def __init__(self,left,right):
+        if type(left) != Expression or type(right) != Expression:
+            raise TypeError("Not Expression")
+        self.left = left
+        self.right = right
