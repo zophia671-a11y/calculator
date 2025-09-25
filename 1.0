@@ -261,8 +261,12 @@ class Monomial:
                 return Monomial(self.coef+other.coef,self.expon)
             else:
                 return Polynomial(self,other)
-        elif type(other) == Polynomial:
-            return
+        elif type(other) == int:
+            if self.expon == 0:
+                return Monomial(self.coef+other,0)
+            else:
+                return Polynomial(self,Monomial(other,0))
+        elif type
         raise TypeError(f"Monomials dont add with {type(other)}")
         
     def __sub__(self,other):
@@ -271,6 +275,11 @@ class Monomial:
                 return Monomial(self.coef-other.coef,self.expon)
             else:
                 return Polynomial(self,-other)
+        elif type(other) == int:
+            if self.expon == 0:
+                return Monomial(self.coef-other,0)
+            else:
+                return Polynomial(self,-Monomial(other,0))
         elif type(other) == Polynomial:
             return
         raise TypeError(f"Monomials dont subtract with {type(other)}")
@@ -278,6 +287,8 @@ class Monomial:
     def __mult__(self,other):
         if type(other) == Monomial:
             return Monomial(self.coef*other.coef,self.expon+other.expon)
+        elif type(other) == int:
+            self.coef *= int
         elif type(other) == Polynomial:
             return
         raise TypeError(f"Monomials dont multiply with {type(other)}")
@@ -331,8 +342,8 @@ class Polynomial:
         return len(self.monomials)
     
     def __iter__(self):
-        for i in range(len(self)):
-            yield self[i]
+        for i in self.monomials:
+            yield i
     
     def collapse(self):
         if len(self) == 1:
