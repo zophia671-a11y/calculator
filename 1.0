@@ -239,8 +239,8 @@ class Monomial:
     def __init__(self,coef,expon):
         if type(coef) != int or type(expon) != int:
             raise TypeError("Monomial Don't accept Non-Integers")
-        if expon <= 0:
-            raise Exception("Exponent in Monomials has to be postive")
+        if expon < 0:
+            raise Exception("Exponent in Monomials has to be non-negative")
         self.coef = coef
         self.expon = expon
     
@@ -282,6 +282,23 @@ class Monomial:
             return
         raise TypeError(f"Monomials dont multiply with {type(other)}")
 
+    def __str__(self):
+        if self.coef == 0:
+            return "0"
+        elif self.expon == 0:
+            return f"{self.coef}"
+        elif self.coef == 1 and self.expon == 1:
+            return f"x"
+        elif self.coef == 1:
+            return f"x^{self.expon}"
+        elif self.expon == 1:
+            return f"{self.coef}x"
+        else:
+            return f"{self.coef}x^{self.expon}"
+
+    def __repr__(self):
+        return f"{self.coef}x^{self.expon}"
+
     def expand(self):
         self.__class__ = Polynomial
         self.__init__(self)
@@ -301,9 +318,21 @@ class Polynomial:
                 if term == i:
                     inside = True
             return inside
-        
+
+    def __setitem__(self,exponent,coefficent):
+        if exponent in self:
+            self.monomials[exponent] = coefficent
+        else: raise "Exponent not in Polynomial (setitem)"        
+
+    def __getitem__(self,item):
+        return self.monomials[item]
+
     def __len__(self):
         return len(self.monomials)
+    
+    def __iter__(self):
+        for i in range(len(self)):
+            yield self[i]
     
     def collapse(self):
         if len(self) == 1:
@@ -311,6 +340,3 @@ class Polynomial:
             self.__init__(self.monomials[0].coef,self.monomials[0].expon)
         else:
             pass
-            raise TypeError("Not Expression")
-        self.left = left
-        self.right = right
