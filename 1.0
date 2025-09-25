@@ -243,7 +243,7 @@ class Monomial:
             raise Exception("Exponent in Monomials has to be non-negative")
         self.coef = coef
         self.expon = expon
-    
+
     def __eq__(self,other):
         if type(other) == Monomial:
             if self.coef == other.coef and self.expon == other.expon:
@@ -266,7 +266,10 @@ class Monomial:
                 return Monomial(self.coef+other,0)
             else:
                 return Polynomial(self,Monomial(other,0))
-        elif type
+        elif type(other) == Polynomial:
+            list = other.monomials
+            list.append(self)
+            return Polynomial(list)
         raise TypeError(f"Monomials dont add with {type(other)}")
         
     def __sub__(self,other):
@@ -315,11 +318,23 @@ class Monomial:
         self.__init__(self)
 
 class Polynomial:
+    def append(self,monom):
+        self.monomials.append(monom)
+
     def __init__(self, *monomials):
-        self.monomials = monomials
-        for i in monomials:
+        self.monomials = list(monomials)
+        if len(self.monomials) == 0:
+            raise Exception("Polynomial Class can't be empty")
+
+        if type(self.monomials[0]) == list:
+            for i in self.monomials[0]:
+                self.append(i)
+            del self.monomials[0]
+
+        for i in self.monomials:
             if type(i) != Monomial:
-                raise TypeError("Polynomial doesn't accept non-monomial")
+                print(type(i))
+                raise TypeError(f"Polynomial doesn't accept non-monomials")
         # Need to Simplify
 
     def __contains__(self,term):
@@ -345,9 +360,24 @@ class Polynomial:
         for i in self.monomials:
             yield i
     
+    def __str__(self):
+        text = ""
+        for i in self:
+            text += f"{str(i)} + "
+        text = text[:-3]
+        return text
+
+    def __add__(self,other):
+        if type(other) == Monomial:
+            return other + self
+        elif type(other) == int:
+            list = self.monomials
+            list.append(Monomial(other,0))
+            return Polynomial(list)
+
     def collapse(self):
         if len(self) == 1:
             self.__class__ = Monomial
             self.__init__(self.monomials[0].coef,self.monomials[0].expon)
         else:
-            pass
+            return Polynomial
