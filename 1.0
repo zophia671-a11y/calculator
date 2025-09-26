@@ -385,8 +385,10 @@ class Polynomial:
 
 #Calculus
 
-def integral(func,a,b,prec=100000):
+def integral(func,a,b,prec=100000,iprec=10000):
     sum = 0
+    if b == "inf":
+        return integral(func,a,iprec,prec=prec)
     if a == b:
         return 0
     elif a > b:
@@ -396,3 +398,7 @@ def integral(func,a,b,prec=100000):
             sum += (func((b-a)/prec*i+a)*(b-a)/prec)
         return sum
 
+def gamma(x,prec1=1000000,prec2=10000000):
+    def sga(t):
+        return power(t,x-1) * exp(-t)
+    return integral(sga,0,"inf",iprec=prec1,prec=prec2)
