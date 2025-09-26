@@ -381,3 +381,15 @@ class Polynomial:
             self.__init__(self.monomials[0].coef,self.monomials[0].expon)
         else:
             return Polynomial
+#Calculus
+
+def integral(func,a,b,prec=100000):
+    sum = 0
+    if a == b:
+        return 0
+    elif a > b:
+        return -integral(func,b,a,prec=prec)
+    else:
+        for i in range(1,prec):
+            sum += (func((b-a)/prec*i+a)*(b-a)/prec)
+        return sum
