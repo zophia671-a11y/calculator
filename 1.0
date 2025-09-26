@@ -1,5 +1,7 @@
 #Basic
 def factorial(x,number=1):
+    if type(x) != int:
+        raise TypeError("Factorial Only Uses Integers. Gamma can do more!")
     if x == 1 or x == 0:
         return 1
     elif x<0:
