@@ -411,4 +411,6 @@ def gamma(x,prec=5):
         print("Gamma calculated for less than 0.725, might have some wrong display digits")
     else:
         print("Gamma is often wrong to a sometimes signifacant margin")
-    return integral(sga,0,0.0235079*x**2+4.14783*x+30.34763,prec)
+    def reg(x): return 0.0235079*x**2+4.14783*x+30.34763
+    regconstant = reg(x)
+    return integral(sga,0,regconstant,prec) + integral(sga,regconstant,1000)
