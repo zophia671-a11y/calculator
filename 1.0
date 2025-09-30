@@ -47,7 +47,9 @@ def root(x,rad=2):
         for p in range(1,10):
             result = result - (pow(result,rad)-x)/(rad * pow(result,rad-1))
         return result
-    
+def sqrt(x):
+    return root(x)
+
 #Constants
 
 e = 0
@@ -398,19 +400,47 @@ def integral(func,a,b,prec=100000):
             sum += (func((b-a)/prec*i+a)*(b-a)/prec)
         return sum
 
-def gamma(x,prec=5):
-    prec = power(10,prec)
-    def sga(t):
-        return power(t,x-1) * exp(-t)
-    if x < 0:
-        print("Gamma calculated for less than 0, will be very innacurate or completely wrong")
-        return integral(sga,0,10000,prec)
-    if x < 0.45:
-        print("Gamma calculated for less than 0.45, will be innacurate to a decent degree")
-    elif x < 0.725:
-        print("Gamma calculated for less than 0.725, might have some wrong display digits")
+# Integer Operations
+def choose(n,k):
+    if type(n) == int and type(k) == int:
+        return factorial(n)/(factorial(k)*factorial(n-k))
     else:
-        print("Gamma is often wrong to a sometimes signifacant margin")
-    def reg(x): return 0.0235079*x**2+4.14783*x+30.34763
-    regconstant = reg(x)
-    return integral(sga,0,regconstant,prec) + integral(sga,regconstant,1000)
+        raise TypeError("Choose only takes integers for now!")
+
+#Prerequisites for Gamma
+def pochhamer(k,r):
+    if type(n) == int and type(k) == int:
+        return factorial(k+r-1)/factorial(k-1)
+    else:
+        raise TypeError("Pochhamer only takes integers")
+
+def epspiecewise(x):
+    if x == 0:
+        return 1
+    else:
+        return 2
+
+def gseries(k,x,g):
+    gconstant = (power(e,g) * epspiecewise(k) * power(-1,k))/sqrt(2*pi)
+    sum = 0
+    for r in range(0,k):
+        sum += power(-1,k) * choose(k,r) * pochhamer(k,r) * power(e/(x+g+1/2),x+1/2)
+    return sum
+
+def hseries(k,x):
+    return 1/(pochhamer(x+1,k)*pochhamer(x+1,-k))
+
+    
+def gamma(x,g=7):
+    if isinstance(x,complex):
+        raise TypeError("Gamma not coded for complex numbers")
+    elif x < 1.5+g and (x < 0 and type(x) == int):
+        return (pi/sin(pi*x))/gamma(1-x)
+    if x.real + g + 1/2 <= 0:
+        raise Exception("G value doesn't work for gamma function")
+    x += 1
+    constant = sqrt(2*pi) * power(x+g+1/2,x+1/2) * power(e,-x+g+1/2)
+    sum = 0
+    for i in range(1,6):
+        sum += gseries(i,x,g) * hseries(i,x)
+    return sum * constant
