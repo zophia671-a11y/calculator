@@ -406,11 +406,13 @@ def choose(n,k):
         return factorial(n)/(factorial(k)*factorial(n-k))
     else:
         raise TypeError("Choose only takes integers for now!")
-
 #Prerequisites for Gamma
 def pochhamer(k,r):
     if type(n) == int and type(k) == int:
-        return factorial(k+r-1)/factorial(k-1)
+        if k - 1 >= 0 and k + r - 1 >= 0:
+            return factorial(k+r-1)/factorial(k-1)
+        else:
+            return 1/pochhamer(k-r,r)
     else:
         raise TypeError("Pochhamer only takes integers")
 
@@ -434,6 +436,8 @@ def hseries(k,x):
 def gamma(x,g=7):
     if isinstance(x,complex):
         raise TypeError("Gamma not coded for complex numbers")
+    elif type(x) == int and x <= 0:
+        return "Undefined"
     elif x < 1.5+g and (x < 0 and type(x) == int):
         return (pi/sin(pi*x))/gamma(1-x)
     if x.real + g + 1/2 <= 0:
@@ -441,6 +445,6 @@ def gamma(x,g=7):
     x += 1
     constant = sqrt(2*pi) * power(x+g+1/2,x+1/2) * power(e,-x+g+1/2)
     sum = 0
-    for i in range(1,6):
+    for i in range(1,100):
         sum += gseries(i,x,g) * hseries(i,x)
     return sum * constant
