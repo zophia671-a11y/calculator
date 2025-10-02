@@ -19,28 +19,44 @@ while i < len(user_input):
         new_string += current
     i += 1
 
-result = ""
-#Takes care of simplification using +, -, * and /
+i = 0
+new_string = ""
+
 while i < len(user_input):
     current = globals()[f"letter_{i}"]
-    previous = globals()[f"letter_{i-1}"]
-    previous2 = globals()[f"letter_{i-2}"]
-    if current.isdigit() and previous2.isdigit():
-        if previous == "+":
-            result = int(previous2) + int(current)
-        elif previous == "-":
-            result = int(previous2) - int(current)
-        elif previous == "*":
-            result = int(previous2) * int(current)
-        elif previous == "/":
-            result = int(previous2) / int(current)
+    if current.isdigit():
+        num_str = current
+        i += 1
+        while i < len(user_input) and globals()[f"letter_{i}"].isdigit():
+            num_str += globals()[f"letter_{i}"]
+            i += 1
+        if i < len(user_input) and globals()[f"letter_{i}"] in "+-*/":
+            op = globals()[f"letter_{i}"]
+            i += 1
+            num_strpost = ""
+            while i < len(user_input) and globals()[f"letter_{i}"].isdigit():
+                num_strpost += globals()[f"letter_{i}"]
+                i += 1
+            if op == "+":
+                result = int(num_str) + int(num_strpost)
+            elif op == "-":
+                result = int(num_str) - int(num_strpost)
+            elif op == "*":
+                result = int(num_str) * int(num_strpost)
+            elif op == "/":
+                result = int(num_str) / int(num_strpost)
+            new_string += str(result)
+            continue
         else:
-            result = str(num1) + previous + str(num2)  # fallback, should rarely happen
-        new_string += str(result)
-        i += 1 
+            new_string += num_str
+            continue
     else:
         new_string += current
-    i +=1
+        i += 1
+
+
+
+
 
 
 
