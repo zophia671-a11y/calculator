@@ -26,27 +26,20 @@ def my_abs(x):
     else:
         return x
     
-def root(x,rad=2):
-    result = 0
-    if x<0:
-        if rad%2 ==0:
-            while pow(result,2) < abs(x):
-                result += 1
-            for p in range(1,10):
-                result = result - (pow(result,rad)-abs(x))/(rad * pow(result,rad-1))
-            return result*1j
-        else:
-            while pow(result,2) < abs(x):
-                result += 1
-            for p in range(1,10):
-                result = result - (pow(result,rad)-abs(x))/(rad * pow(result,rad-1))
-            return -1*result
-    else:
+def root(x, rad=2):
+    if x >= 0:
+        result = 0
         while pow(result,2) < x:
             result += 1
-        for p in range(1,10):
+        for _ in range(10):
             result = result - (pow(result,rad)-x)/(rad * pow(result,rad-1))
         return result
+    else:  # negative numbers → complex
+        if rad % 2 == 0:  # even root of negative → imaginary
+            return root(-x, rad) * 1j
+        else:  # odd root of negative → negative real
+            return -root(-x, rad)
+            
 def sqrt(x):
     return root(x)
 
@@ -166,7 +159,7 @@ def arctanh(x):
     return -1j * arctan(1j * x)
     
 def arccosh(x):
-    return ln(x+(root(1+x)*root(x-1)))
+    return ln(x+(root(1+power(x,2))*root(x-1)))
 
 def arcsin(x):
     if x == 1:
@@ -176,30 +169,45 @@ def arcsin(x):
     else:
         return -1j * ln(1j*x+root(1-pow(x,2)))
 
-#Logarithms
+def arcsech(x):
+    y = 1/x
+    return ln(y + root(y-1)*root(y+1))
 
+#Logarithms
 def ln(a):
-    if isinstance(a, complex):
-        x, y = a.real, a.imag
-        r = root(x*x + y*y)
-        return ln(r) + 1j*arg(a)
-    elif a<0:
-        result = -1000
-        while pow(e, result) < abs(a):
-            result += 1
-        for i in range(1,10):
-            result = result - (pow(e, result)-abs(a))/pow(e, result)
-        return result+(1j*pi)
-    elif a==0:
+    if a == 0:
         print("MathError: ln(0) undefined")
         return None
-    else:
+    if isinstance(a, complex) or a < 0:
+        x = a.real if isinstance(a, complex) else a
+        y = a.imag if isinstance(a, complex) else 0
+        r = root(x*x + y*y)
+        # compute angle (theta) inline
+        if x > 0:
+            theta = arctan1(y/x)
+        elif x < 0 and y >= 0:
+            theta = arctan1(y/x) + pi
+        elif x < 0 and y < 0:
+            theta = arctan1(y/x) - pi
+        elif x == 0 and y > 0:
+            theta = pi/2
+        elif x == 0 and y < 0:
+            theta = -pi/2
+        else:
+            theta = 0
         result = -1000
-        while pow(e, result) < a:
+        while power(e, result) < r:
             result += 1
-        for i in range(1,10):
-            result = result - (pow(e, result)-a)/pow(e, result)
-        return result
+        for _ in range(10):
+            result = result - (power(e, result) - r)/power(e, result)
+        return result + 1j*theta
+    result = -1000
+    while power(e, result) < a:
+        result += 1
+    for _ in range(10):
+        result = result - (power(e, result) - a)/power(e, result)
+    return result
+
 
 
 def log10(x):
@@ -451,3 +459,5 @@ def gamma(x,g=7):
     for i in range(1,100):
         sum += gseries(i,x,g) * hseries(i,x)
     return sum * constant
+
+print (arcsech(3))
