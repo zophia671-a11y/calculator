@@ -1,3 +1,4 @@
+package.json
 #Basic
 def factorial(x,number=1):
     if type(x) != int:
