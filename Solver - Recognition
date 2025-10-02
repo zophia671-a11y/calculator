@@ -9,11 +9,12 @@ new_string = globals()['letter_0']
 while i < len(user_input):
     current = globals()[f"letter_{i}"]
     previous = globals()[f"letter_{i-1}"]
-    if previous.isdigit() or current.isdigit():
+    if previous.isdigit() and current.isalpha():
+        new_string += "*" + current
+    elif previous.isalpha() and current.isdigit():
         new_string += "*" + current
     else:
         new_string += current
     i += 1
 
-result = eval(new_string)
-print("Resulting string:", result)
+print("Resulting string:", new_string)
