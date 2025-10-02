@@ -19,4 +19,29 @@ while i < len(user_input):
         new_string += current
     i += 1
 
+result = ""
+#Takes care of simplification using +, -, * and /
+while i < len(user_input):
+    current = globals()[f"letter_{i}"]
+    previous = globals()[f"letter_{i-1}"]
+    previous2 = globals()[f"letter_{i-2}"]
+    if current.isdigit() and previous2.isdigit():
+        if previous == "+":
+            result = int(previous2) + int(current)
+        elif previous == "-":
+            result = int(previous2) - int(current)
+        elif previous == "*":
+            result = int(previous2) * int(current)
+        elif previous == "/":
+            result = int(previous2) / int(current)
+        else:
+            result = str(num1) + previous + str(num2)  # fallback, should rarely happen
+        new_string += str(result)
+        i += 1 
+    else:
+        new_string += current
+    i +=1
+
+
+
 print("Resulting string:", new_string)
