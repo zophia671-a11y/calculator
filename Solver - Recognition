@@ -1,63 +1,33 @@
-#Converts input to individual characters in variables
-user_input = input("Enter a string: ")
-i = 0
+user_input = input("Enter a string:")
+input_list = []
+output_list = []
+i=1
+num_str = ""
+
+#Create a list to hold pieces of the input
+for char in user_input:
+    input_list.append(char)
+
+
+#1st parcing - converting constantx <---> constant*x    
 while i < len(user_input):
-    globals()[f"letter_{i}"] = user_input[i]
-    i += 1
+    current = input_list[i]
+    previous = input_list[i-1]
+    if current.isalpha() and previous.isdigit():
+        j = i-1
+        while input_list[j].isdigit():
+            num_str = input_list[j] + num_str
+            j -= 1
+        output_list.append(num_str + "*" + current)
+        num_str = ""
+        i += 1
+    else:
+        output_list += current
+        i += 1
+print(output_list)
+#2nd parcing - combination of constants
 i = 1
-new_string = globals()['letter_0']
-#Normalization (standardized form)
-#Takes care of conversion from form 3x <--> 3*x
-while i < len(user_input):
-    current = globals()[f"letter_{i}"]
-    previous = globals()[f"letter_{i-1}"]
-    if previous.isdigit() and current.isalpha():
-        new_string += "*" + current
-    elif previous.isalpha() and current.isdigit():
-        new_string += "*" + current
-    else:
-        new_string += current
-    i += 1
-
-i = 0
-new_string = ""
-
-while i < len(user_input):
-    current = globals()[f"letter_{i}"]
-    if current.isdigit():
-        num_str = current
-        i += 1
-        while i < len(user_input) and globals()[f"letter_{i}"].isdigit():
-            num_str += globals()[f"letter_{i}"]
-            i += 1
-        if i < len(user_input) and globals()[f"letter_{i}"] in "+-*/":
-            op = globals()[f"letter_{i}"]
-            i += 1
-            num_strpost = ""
-            while i < len(user_input) and globals()[f"letter_{i}"].isdigit():
-                num_strpost += globals()[f"letter_{i}"]
-                i += 1
-            if op == "+":
-                result = int(num_str) + int(num_strpost)
-            elif op == "-":
-                result = int(num_str) - int(num_strpost)
-            elif op == "*":
-                result = int(num_str) * int(num_strpost)
-            elif op == "/":
-                result = int(num_str) / int(num_strpost)
-            new_string += str(result)
-            continue
-        else:
-            new_string += num_str
-            continue
-    else:
-        new_string += current
-        i += 1
-
-
-
-
-
-
-
-print("Resulting string:", new_string)
+while i < len(output_list):
+    current = output_list[i]
+    previous = output_list[i-1]
+    
